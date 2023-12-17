@@ -152,62 +152,74 @@ print(pt_device.to_string())
 pt_channel = pd.pivot_table(df, values='revenue', index='region', columns='channel', aggfunc='count')
 print(pt_channel.to_string())
 
-grouped_region = df.groupby('region')['revenue']
-regions = []
-regions_mean_revenues = []
-for region, revenue in grouped_region:
-    regions.append(region)
-    regions_mean_revenues.append(revenue.mean())
-print(regions)
-for i in range(len(regions)):
-    for j in range(i + 1, len(regions)):
-        region1 = regions[i]
-        region2 = regions[j]
+# grouped_region = df.groupby('region')['revenue']
+# regions = []
+# regions_mean_revenues = []
+# for region, revenue in grouped_region:
+#     regions.append(region)
+#     regions_mean_revenues.append(revenue.mean())
+# print(regions)
+# for i in range(len(regions)):
+#     for j in range(i + 1, len(regions)):
+#         region1 = regions[i]
+#         region2 = regions[j]
+#
+#         revenue1 = grouped_region.get_group(region1)
+#         revenue2 = grouped_region.get_group(region2)
+#
+#         t_statistic, p_value = stats.ttest_ind(revenue1, revenue2)
+#         rounded = round(p_value, 3)
+#         print(f"P-value {region1} и {region2}: {rounded} & {rounded <= 0.05}")
 
-        revenue1 = grouped_region.get_group(region1)
-        revenue2 = grouped_region.get_group(region2)
+region_data = df.groupby('region')['revenue'].mean()
+result = stats.f_oneway(*[group['revenue'] for _, group in df.groupby('region')])
+print(f'region result: {result}')
 
-        t_statistic, p_value = stats.ttest_ind(revenue1, revenue2)
-        rounded = round(p_value, 3)
-        print(f"P-value {region1} и {region2}: {rounded} & {rounded <= 0.05}")
+# grouped_channel = df.groupby('channel')['revenue']
+# channels = []
+# channels_mean_revenues = []
+# for channel, revenue in grouped_channel:
+#     channels.append(channel)
+#     channels_mean_revenues.append(revenue.mean())
+# print(channels)
+# for i in range(len(channels)):
+#     for j in range(i + 1, len(channels)):
+#         channel1 = channels[i]
+#         channel2 = channels[j]
+#
+#         revenue1 = grouped_channel.get_group(channel1)
+#         revenue2 = grouped_channel.get_group(channel2)
+#
+#         t_statistic, p_value = stats.ttest_ind(revenue1, revenue2)
+#         rounded = round(p_value, 3)
+#         print(f"P-value {channel1} и {channel2}: {rounded} & {rounded <= 0.05}")
 
-grouped_channel = df.groupby('channel')['revenue']
-channels = []
-channels_mean_revenues = []
-for channel, revenue in grouped_channel:
-    channels.append(channel)
-    channels_mean_revenues.append(revenue.mean())
-print(channels)
-for i in range(len(channels)):
-    for j in range(i + 1, len(channels)):
-        channel1 = channels[i]
-        channel2 = channels[j]
+channel_data = df.groupby('channel')['revenue'].mean()
+result = stats.f_oneway(*[group['revenue'] for _, group in df.groupby('channel')])
+print(f'channel result: {result}')
 
-        revenue1 = grouped_channel.get_group(channel1)
-        revenue2 = grouped_channel.get_group(channel2)
+# grouped_time = df.groupby('time_of_day')['revenue']
+# times = []
+# times_mean_revenues = []
+# for time, revenue in grouped_time:
+#     times.append(time)
+#     times_mean_revenues.append(revenue.mean())
+# print(times)
+# for i in range(len(times)):
+#     for j in range(i + 1, len(times)):
+#         time1 = times[i]
+#         time2 = times[j]
+#
+#         revenue1 = grouped_time.get_group(time1)
+#         revenue2 = grouped_time.get_group(time2)
+#
+#         t_statistic, p_value = stats.ttest_ind(revenue1, revenue2)
+#         rounded = round(p_value, 3)
+#         print(f"P-value {time1} и {time2}: {rounded} & {rounded <= 0.05}")
 
-        t_statistic, p_value = stats.ttest_ind(revenue1, revenue2)
-        rounded = round(p_value, 3)
-        print(f"P-value {channel1} и {channel2}: {rounded} & {rounded <= 0.05}")
-
-grouped_time = df.groupby('time_of_day')['revenue']
-times = []
-times_mean_revenues = []
-for time, revenue in grouped_time:
-    times.append(time)
-    times_mean_revenues.append(revenue.mean())
-print(times)
-for i in range(len(times)):
-    for j in range(i + 1, len(times)):
-        time1 = times[i]
-        time2 = times[j]
-
-        revenue1 = grouped_time.get_group(time1)
-        revenue2 = grouped_time.get_group(time2)
-
-        t_statistic, p_value = stats.ttest_ind(revenue1, revenue2)
-        rounded = round(p_value, 3)
-        print(f"P-value {time1} и {time2}: {rounded} & {rounded <= 0.05}")
+time_data = df.groupby('time_of_day')['revenue'].mean()
+result = stats.f_oneway(*[group['revenue'] for _, group in df.groupby('time_of_day')])
+print(f'time_of_day result: {result}')
 
 correlation = df['sessiondurationsec'].corr(df['revenue'])
 print('corr', round(correlation, 3))
