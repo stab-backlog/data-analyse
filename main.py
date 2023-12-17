@@ -55,6 +55,10 @@ channel_lst = ['социальные сети ', 'organic', 'контекстн�
 df['channel'].fillna(value='NaN', inplace=True)
 df['channel'] = df.apply(lambda x: merge_similar_strings(x['channel'], channel_lst), axis=1)
 
+device_lst = ['Android', 'Mac', 'PC', 'iPhone']
+df['device'].fillna(value='NaN', inplace=True)
+df['device'] = df.apply(lambda x: merge_similar_strings(x['device'], channel_lst), axis=1)
+
 df.drop_duplicates().reset_index(drop=True)
 
 # print(*[df[i].value_counts() for i in df.columns], sep=f'\n{"-" * 10}\n')
